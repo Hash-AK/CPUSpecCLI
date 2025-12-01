@@ -1,0 +1,37 @@
+{
+    "cpus": [
+        {
+            "id": "intel-core-i3-1215UL",
+            "name": "Intel Core i3-1215UL",
+            "brand": "Intel",
+            "generation": 12,
+            "generation_codename": "Alder Lake",
+            "series": "Core i3",
+            "specs":{
+                "cores": 6,
+                "threads": 8,
+                "cache_l1_kb":160,
+                "cache_l2_mb":2.5,
+                "cache_l3_mb":10,
+                "base_freq_ghz": 1.2,
+                "boost_freq_ghz": 4.4,
+                "tdp_watts":65,
+                "socket":"LGA1700",
+                "architecture": "x86-64",
+                "integrated_gpu":"Intel UHD Graphics for 12th Gen"
+            },
+            "features":[
+                "AVX2",
+                "SSE4.1",
+                "SSE4.2",
+                "Hyper-Threading",
+                "Virtualization (VT-x)",
+                "AES-NI"
+
+            ],
+            "overclockable":false,
+            "release_date":"2022-07"
+
+        }
+    ]
+}
