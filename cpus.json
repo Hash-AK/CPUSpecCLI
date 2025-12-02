@@ -33,6 +33,28 @@
             "overclockable":false,
             "release_date":"2022-07"
 
+
+        },
+        {
+            "id": "intel-core-i3-12300HL",
+            "name": "Intel Core i3-12300HL",
+            "brand": "Intel",
+            "generation": 12,
+            "generation_codename": "Alder Lake",
+            "series": "Core i3",
+            "specs":{
+                "cores": 8,
+                "threads":12,
+                "base_freq_ghz":2.0,
+                "boost_freq_ghz":4.4,
+                "tdp_watts": 45,
+                "socket": "LGA1700",
+                "architecture": "x86-64",
+                "integrated_gpu": "Intel UHD Graphics 730",
+                "max_mem_supported_gb" : 64
+            }
+
         }
+
     ]
 }

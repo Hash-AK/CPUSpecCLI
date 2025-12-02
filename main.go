@@ -4,6 +4,8 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
+
+	"github.com/spf13/pflag"
 )
 
 //go:embed cpus.json
@@ -39,22 +41,48 @@ type Specs struct {
 	MaximumSupportedMemoryGB int     `json:"max_mem_supported_gb"`
 }
 
+func dumbAllCpus(cpus CPUs) {
+	for i := range cpus.CPUs {
+		fmt.Printf("ID: %s\n", cpus.CPUs[i].ID)
+		fmt.Printf("├─Name: %s\n", cpus.CPUs[i].Name)
+		fmt.Printf("├─Brand: %s\n", cpus.CPUs[i].Brand)
+		fmt.Printf("├─Generation: %d\n", cpus.CPUs[i].Generation)
+		fmt.Printf("├─Generation's codename: %s\n", cpus.CPUs[i].GenerationCodename)
+		fmt.Printf("├─Series: %s\n", cpus.CPUs[i].Series)
+		fmt.Println("└┬─Specs:")
+		fmt.Printf(" ├─Total cores #: %d\n", cpus.CPUs[i].Specs.Cores)
+		fmt.Printf(" ├─Threads: %d\n", cpus.CPUs[i].Specs.Threads)
+		fmt.Printf(" ├─Base frequency: %fGHz\n", cpus.CPUs[i].Specs.BaseFrequencyGHz)
+		fmt.Println()
+
+	}
+}
 func main() {
+	idToSearch := pflag.String("id", "none", "CPU ID to search in database")
 	dbJson, err := DB.ReadFile("cpus.json")
 	if err != nil {
 		panic(err)
 	}
 	var cpus CPUs
 	json.Unmarshal([]byte(dbJson), &cpus)
-	for i := range cpus.CPUs {
-		fmt.Println(cpus.CPUs[i].ID)
-		fmt.Println(cpus.CPUs[i].Name)
-		fmt.Println(cpus.CPUs[i].Brand)
-		fmt.Println(cpus.CPUs[i].Generation)
-		fmt.Println(cpus.CPUs[i].GenerationCodename)
-		fmt.Println(cpus.CPUs[i].Series)
-		fmt.Println(cpus.CPUs[i].Specs.Cores)
+
+	pflag.Parse()
+	if *idToSearch != "none" {
+		var idFound int
+		var foundMatch bool
+		for i := range cpus.CPUs {
+			if cpus.CPUs[i].ID == *idToSearch {
+				idFound = i
+				foundMatch = true
+			}
+		}
+		if foundMatch {
+			fmt.Printf("Found a match for id %s : %s\n", *idToSearch, cpus.CPUs[idFound].Name)
+
+		} else {
+			fmt.Printf("Could not find any CPU in database with id %s\n", *idToSearch)
+		}
 
 	}
-
+	dumbAllCpus(cpus)
 }
