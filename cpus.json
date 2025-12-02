@@ -15,10 +15,11 @@
                 "cache_l3_mb":10,
                 "base_freq_ghz": 1.2,
                 "boost_freq_ghz": 4.4,
-                "tdp_watts":65,
+                "tdp_watts":15,
                 "socket":"LGA1700",
                 "architecture": "x86-64",
-                "integrated_gpu":"Intel UHD Graphics for 12th Gen"
+                "integrated_gpu":"Intel UHD Graphics for 12th Gen",
+                "max_mem_supported_gb": 64 
             },
             "features":[
                 "AVX2",
