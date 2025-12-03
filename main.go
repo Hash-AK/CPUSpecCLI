@@ -4,6 +4,7 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/spf13/pflag"
 )
@@ -41,8 +42,9 @@ type Specs struct {
 	MaximumSupportedMemoryGB int     `json:"max_mem_supported_gb"`
 }
 
-func dumbAllCpus(cpus CPUs) {
+func dumpAllCpus(cpus CPUs) {
 	for i := range cpus.CPUs {
+		fmt.Printf("[#%d]\n", i)
 		fmt.Printf("ID: %s\n", cpus.CPUs[i].ID)
 		fmt.Printf("├─Name: %s\n", cpus.CPUs[i].Name)
 		fmt.Printf("├─Brand: %s\n", cpus.CPUs[i].Brand)
@@ -53,12 +55,31 @@ func dumbAllCpus(cpus CPUs) {
 		fmt.Printf(" ├─Total cores #: %d\n", cpus.CPUs[i].Specs.Cores)
 		fmt.Printf(" ├─Threads: %d\n", cpus.CPUs[i].Specs.Threads)
 		fmt.Printf(" ├─Base frequency: %fGHz\n", cpus.CPUs[i].Specs.BaseFrequencyGHz)
+		fmt.Printf(" ├─Boost frequency: %fGHz\n", cpus.CPUs[i].Specs.BoostFrequencyGHz)
+		fmt.Printf(" ├─TDP: %d Watts\n", cpus.CPUs[i].Specs.TDPWatts)
+		fmt.Printf(" ├─Socket: %s\n", cpus.CPUs[i].Specs.Socket)
+		fmt.Printf(" ├─Architecture: %s\n", cpus.CPUs[i].Specs.Architecture)
+		fmt.Printf(" ├─Integrated GPU: %s\n", cpus.CPUs[i].Specs.IntegratedGPU)
+		fmt.Printf(" ├─Maximum supported memory: %dGB\n", cpus.CPUs[i].Specs.MaximumSupportedMemoryGB)
+		fmt.Println("┌┘")
+		fmt.Println("└┬─Features:")
+		for f := range cpus.CPUs[i].Features {
+			fmt.Printf(" ├─%s\n", cpus.CPUs[i].Features[f])
+		}
+		fmt.Println("┌┘")
+		fmt.Printf("├─Overclockable?: %t\n", cpus.CPUs[i].Overclockable)
+		fmt.Printf("└─Release date: %s\n", cpus.CPUs[i].ReleaseDate)
 		fmt.Println()
-
 	}
+}
+func CaseInsensitiveContains(s, substring string) bool {
+	// Code taken from https://stackoverflow.com/questions/24836044/case-insensitive-string-search-in-golang
+	s, substring = strings.ToLower(s), strings.ToLower(substring)
+	return strings.Contains(s, substring)
 }
 func main() {
 	idToSearch := pflag.String("id", "none", "CPU ID to search in database")
+	searchTerm := pflag.String("search", "none", "Term to search in the CPU names.")
 	dbJson, err := DB.ReadFile("cpus.json")
 	if err != nil {
 		panic(err)
@@ -84,5 +105,22 @@ func main() {
 		}
 
 	}
-	dumbAllCpus(cpus)
+	if *searchTerm != "none" {
+		var foundIDs []int
+
+		for i := range cpus.CPUs {
+			if CaseInsensitiveContains(cpus.CPUs[i].Name, *searchTerm) {
+				foundIDs = append(foundIDs, i)
+			}
+		}
+		if len(foundIDs) > 0 {
+			fmt.Printf("Found %d matches:\n", len(foundIDs))
+			for i := range foundIDs {
+				fmt.Printf("Name: %s, ID: %s\n", cpus.CPUs[i].Name, cpus.CPUs[i].ID)
+			}
+		} else {
+			fmt.Printf("Not matches found for term: %s\n", *searchTerm)
+		}
+	}
+	//dumpAllCpus(cpus)
 }

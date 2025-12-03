@@ -52,7 +52,17 @@
                 "architecture": "x86-64",
                 "integrated_gpu": "Intel UHD Graphics 730",
                 "max_mem_supported_gb" : 64
-            }
+            },
+            "features":[
+                "AVX2",
+                "SSE4.1",
+                "SSE4.2",
+                "Hyper-Threading",
+                "Virtualization (VT-x)",
+                "AES-NI"
+            ],
+            "overclockable":false,
+            "release_date":"2022-07"
 
         }
 
