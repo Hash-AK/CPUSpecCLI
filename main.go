@@ -30,9 +30,7 @@ type CPU struct {
 type Specs struct {
 	Cores                    int     `json:"cores"`
 	Threads                  int     `json:"threads"`
-	CacheL1KB                float64 `json:"cache_l1_kb"`
-	CacheL2MB                float64 `json:"cache_l2_mb"`
-	CacheL3MB                float64 `json:"cache_l3_mb"`
+	CacheL3MB                float64 `json:"cache_mb"`
 	BaseFrequencyGHz         float64 `json:"base_freq_ghz"`
 	BoostFrequencyGHz        float64 `json:"boost_freq_ghz"`
 	TDPWatts                 int     `json:"tdp_watts"`
@@ -42,8 +40,10 @@ type Specs struct {
 	MaximumSupportedMemoryGB int     `json:"max_mem_supported_gb"`
 }
 
+func dumpID(id string, cpus CPUs) {}
 func dumpAllCpus(cpus CPUs) {
 	for i := range cpus.CPUs {
+		fmt.Println("═══════════")
 		fmt.Printf("[#%d]\n", i)
 		fmt.Printf("ID: %s\n", cpus.CPUs[i].ID)
 		fmt.Printf("├─Name: %s\n", cpus.CPUs[i].Name)
@@ -72,6 +72,7 @@ func dumpAllCpus(cpus CPUs) {
 		fmt.Println()
 	}
 }
+func compareCpus(id1, id2 string, cpus CPUs) {}
 func CaseInsensitiveContains(s, substring string) bool {
 	// Code taken from https://stackoverflow.com/questions/24836044/case-insensitive-string-search-in-golang
 	s, substring = strings.ToLower(s), strings.ToLower(substring)
@@ -80,6 +81,7 @@ func CaseInsensitiveContains(s, substring string) bool {
 func main() {
 	idToSearch := pflag.String("id", "none", "CPU ID to search in database")
 	searchTerm := pflag.String("search", "none", "Term to search in the CPU names.")
+	compareIDs := pflag.StringSlice("compare", nil, "CPUs IDs to compare (need two values)")
 	dbJson, err := DB.ReadFile("cpus.json")
 	if err != nil {
 		panic(err)
@@ -119,7 +121,16 @@ func main() {
 				fmt.Printf("Name: %s, ID: %s\n", cpus.CPUs[i].Name, cpus.CPUs[i].ID)
 			}
 		} else {
-			fmt.Printf("Not matches found for term: %s\n", *searchTerm)
+			fmt.Printf("No matches found for term: %s\n", *searchTerm)
+		}
+	}
+	if compareIDs != nil {
+		if len(*compareIDs) == 2 {
+			id1, id2 := (*compareIDs)[0], (*compareIDs)[1]
+			compareCpus(id1, id2, cpus)
+
+		} else {
+			fmt.Println("Please provide two valid CPUs ids to compare.")
 		}
 	}
 	//dumpAllCpus(cpus)
