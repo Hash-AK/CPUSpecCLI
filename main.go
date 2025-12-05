@@ -43,7 +43,7 @@ type Specs struct {
 func dumpID(id string, cpus CPUs) {}
 func dumpAllCpus(cpus CPUs) {
 	for i := range cpus.CPUs {
-		fmt.Println("═══════════")
+		fmt.Println("═══════════════════════════════════════════════════════")
 		fmt.Printf("[#%d]\n", i)
 		fmt.Printf("ID: %s\n", cpus.CPUs[i].ID)
 		fmt.Printf("├─Name: %s\n", cpus.CPUs[i].Name)
@@ -81,7 +81,8 @@ func CaseInsensitiveContains(s, substring string) bool {
 func main() {
 	idToSearch := pflag.String("id", "none", "CPU ID to search in database")
 	searchTerm := pflag.String("search", "none", "Term to search in the CPU names.")
-	compareIDs := pflag.StringSlice("compare", nil, "CPUs IDs to compare (need two values)")
+	compareIDs := pflag.StringSlice("compare", nil, "CPUs IDs to compare (need two comma-sepparated values)")
+	dumpAllFlag := pflag.Bool("dump-all", false, "Display all the CPUs' stats in the database")
 	dbJson, err := DB.ReadFile("cpus.json")
 	if err != nil {
 		panic(err)
@@ -124,14 +125,17 @@ func main() {
 			fmt.Printf("No matches found for term: %s\n", *searchTerm)
 		}
 	}
-	if compareIDs != nil {
+	if len(*compareIDs) > 0 {
 		if len(*compareIDs) == 2 {
 			id1, id2 := (*compareIDs)[0], (*compareIDs)[1]
 			compareCpus(id1, id2, cpus)
 
 		} else {
-			fmt.Println("Please provide two valid CPUs ids to compare.")
+			fmt.Println("Please provide two CPUs ids to compare.")
 		}
+	}
+	if *dumpAllFlag == true {
+		dumpAllCpus(cpus)
 	}
 	//dumpAllCpus(cpus)
 }
