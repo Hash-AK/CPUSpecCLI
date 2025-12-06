@@ -104,7 +104,18 @@ func dumpAllCpus(cpus CPUs) {
 		fmt.Println()
 	}
 }
-func compareCpus(id1, id2 string, cpus CPUs) {}
+func compareCpus(id1, id2 int, cpus CPUs) {
+	cpu1, cpu2 := cpus.CPUs[id1], cpus.CPUs[id2]
+	fmt.Println()
+	title := fmt.Sprintf("CPU Comparison: %s VS %s\n", cpu1.Name, cpu2.Name)
+	fmt.Println(title)
+	fmt.Println("═══════════════════════════════════════════════════════════════")
+	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "Spec", cpu1.Name, cpu2.Name)
+	fmt.Printf("  %-12s │ %-22d │ %-22d\n", "Cores", cpu1.Specs.Cores, cpu2.Specs.Cores)
+	fmt.Printf("  %-12s │ %-22d │ %-22d\n", "Threads", cpu1.Specs.Threads, cpu2.Specs.Threads)
+	fmt.Printf("  %-12s │ %-22.2f │ %-22.2f\n", "Cache (MB)", cpu1.Specs.CacheMB, cpu2.Specs.CacheMB)
+
+}
 func CaseInsensitiveContains(s, substring string) bool {
 	// Code taken from https://stackoverflow.com/questions/24836044/case-insensitive-string-search-in-golang
 	s, substring = strings.ToLower(s), strings.ToLower(substring)
@@ -161,7 +172,23 @@ func main() {
 	if len(*compareIDs) > 0 {
 		if len(*compareIDs) == 2 {
 			id1, id2 := (*compareIDs)[0], (*compareIDs)[1]
-			compareCpus(id1, id2, cpus)
+			var numericalIDs []int
+			for i := range cpus.CPUs {
+				if cpus.CPUs[i].ID == id1 || cpus.CPUs[i].ID == id2 {
+					numericalIDs = append(numericalIDs, i)
+				}
+			}
+			if len(numericalIDs) == 2 {
+				compareCpus(numericalIDs[0], numericalIDs[1], cpus)
+
+			} else {
+				fmt.Println("Please provide two VALID CPUs ids to compare.")
+				if len(numericalIDs) == 1 {
+					fmt.Printf("%s is a valid ID\n", cpus.CPUs[numericalIDs[0]].ID)
+
+				}
+
+			}
 
 		} else {
 			fmt.Println("Please provide two CPUs ids to compare.")
