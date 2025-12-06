@@ -30,7 +30,7 @@ type CPU struct {
 type Specs struct {
 	Cores                    int     `json:"cores"`
 	Threads                  int     `json:"threads"`
-	CacheL3MB                float64 `json:"cache_mb"`
+	CacheMB                  float64 `json:"cache_mb"`
 	BaseFrequencyGHz         float64 `json:"base_freq_ghz"`
 	BoostFrequencyGHz        float64 `json:"boost_freq_ghz"`
 	TDPWatts                 int     `json:"tdp_watts"`
@@ -40,7 +40,15 @@ type Specs struct {
 	MaximumSupportedMemoryGB int     `json:"max_mem_supported_gb"`
 }
 
-func dumpID(id string, cpus CPUs) {}
+func dumpID(id int, cpus CPUs) {
+	fmt.Printf("ID: %s\n", cpus.CPUs[id].ID)
+	fmt.Printf("├─Name: %s\n", cpus.CPUs[id].Name)
+	fmt.Printf("├─Brand: %s\n", cpus.CPUs[id].Brand)
+	fmt.Printf("├─Generation: %d\n", cpus.CPUs[id].Generation)
+	fmt.Printf("├─Generation's codename: %s\n", cpus.CPUs[id].GenerationCodename)
+	fmt.Printf("├─Series: %s\n", cpus.CPUs[id].Series)
+
+}
 func dumpAllCpus(cpus CPUs) {
 	for i := range cpus.CPUs {
 		fmt.Println("═══════════════════════════════════════════════════════")
@@ -51,22 +59,25 @@ func dumpAllCpus(cpus CPUs) {
 		fmt.Printf("├─Generation: %d\n", cpus.CPUs[i].Generation)
 		fmt.Printf("├─Generation's codename: %s\n", cpus.CPUs[i].GenerationCodename)
 		fmt.Printf("├─Series: %s\n", cpus.CPUs[i].Series)
-		fmt.Println("└┬─Specs:")
-		fmt.Printf(" ├─Total cores #: %d\n", cpus.CPUs[i].Specs.Cores)
-		fmt.Printf(" ├─Threads: %d\n", cpus.CPUs[i].Specs.Threads)
-		fmt.Printf(" ├─Base frequency: %fGHz\n", cpus.CPUs[i].Specs.BaseFrequencyGHz)
-		fmt.Printf(" ├─Boost frequency: %fGHz\n", cpus.CPUs[i].Specs.BoostFrequencyGHz)
-		fmt.Printf(" ├─TDP: %d Watts\n", cpus.CPUs[i].Specs.TDPWatts)
-		fmt.Printf(" ├─Socket: %s\n", cpus.CPUs[i].Specs.Socket)
-		fmt.Printf(" ├─Architecture: %s\n", cpus.CPUs[i].Specs.Architecture)
-		fmt.Printf(" ├─Integrated GPU: %s\n", cpus.CPUs[i].Specs.IntegratedGPU)
-		fmt.Printf(" ├─Maximum supported memory: %dGB\n", cpus.CPUs[i].Specs.MaximumSupportedMemoryGB)
-		fmt.Println("┌┘")
-		fmt.Println("└┬─Features:")
-		for f := range cpus.CPUs[i].Features {
-			fmt.Printf(" ├─%s\n", cpus.CPUs[i].Features[f])
+		fmt.Println("│")
+		fmt.Println("├──Specs:")
+		fmt.Printf("│  ├─Total cores #: %d\n", cpus.CPUs[i].Specs.Cores)
+		fmt.Printf("│  ├─Threads: %d\n", cpus.CPUs[i].Specs.Threads)
+		fmt.Printf("│  ├─Cache: %.2fMB\n", cpus.CPUs[i].Specs.CacheMB)
+		fmt.Printf("│  ├─Base frequency: %.2fGHz\n", cpus.CPUs[i].Specs.BaseFrequencyGHz)
+		fmt.Printf("│  ├─Boost frequency: %.2fGHz\n", cpus.CPUs[i].Specs.BoostFrequencyGHz)
+		fmt.Printf("│  ├─TDP: %d Watts\n", cpus.CPUs[i].Specs.TDPWatts)
+		fmt.Printf("│  ├─Socket: %s\n", cpus.CPUs[i].Specs.Socket)
+		fmt.Printf("│  ├─Architecture: %s\n", cpus.CPUs[i].Specs.Architecture)
+		fmt.Printf("│  ├─Integrated GPU: %s\n", cpus.CPUs[i].Specs.IntegratedGPU)
+		fmt.Printf("│  └─Maximum supported memory: %dGB\n", cpus.CPUs[i].Specs.MaximumSupportedMemoryGB)
+		fmt.Println("│")
+		fmt.Println("├──Features:")
+		for f := 0; f < len(cpus.CPUs[i].Features)-1; f++ {
+			fmt.Printf("│  ├─%s\n", cpus.CPUs[i].Features[f])
 		}
-		fmt.Println("┌┘")
+		fmt.Printf("│  └─%s\n", cpus.CPUs[i].Features[len(cpus.CPUs[i].Features)-1])
+		fmt.Println("│")
 		fmt.Printf("├─Overclockable?: %t\n", cpus.CPUs[i].Overclockable)
 		fmt.Printf("└─Release date: %s\n", cpus.CPUs[i].ReleaseDate)
 		fmt.Println()
@@ -102,6 +113,7 @@ func main() {
 		}
 		if foundMatch {
 			fmt.Printf("Found a match for id %s : %s\n", *idToSearch, cpus.CPUs[idFound].Name)
+			dumpID(idFound, cpus)
 
 		} else {
 			fmt.Printf("Could not find any CPU in database with id %s\n", *idToSearch)
@@ -134,7 +146,7 @@ func main() {
 			fmt.Println("Please provide two CPUs ids to compare.")
 		}
 	}
-	if *dumpAllFlag == true {
+	if *dumpAllFlag {
 		dumpAllCpus(cpus)
 	}
 	//dumpAllCpus(cpus)

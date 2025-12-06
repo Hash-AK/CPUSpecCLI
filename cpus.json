@@ -75,7 +75,7 @@
                 "cores":6,
                 "threads":8,
                 "cache_mb":10,
-                "base_freq_gz":1.2,
+                "base_freq_ghz":1.2,
                 "boost_freq_ghz":4.4,
                 "tdp_watts":15,
                 "socket":"FCBGA1744",
