@@ -95,6 +95,132 @@
             "release_date":"2022-01"
 
 
+            },
+            {
+                "id": "intel-core-i3-1315U",
+                "name":"Intel Core i3-1315U",
+                "brand":"Intel",
+                "generation":13,
+                "generation_codename":"Raptor Lake",
+                "series":"Core i3",
+                "specs":{
+                    "cores": 6,
+                    "threads": 8,
+                    "cache_mb":10,
+                    "base_freq_ghz":1.2,
+                    "boost_freq_ghz":4.5,
+                    "tdp_watts":15,
+                    "socket":"FCBGA1744",
+                    "architecture":"x86-64",
+                    "integrated_gpu":"Intel UHD Graphics for 13th Gen",
+                    "max_mem_supported_gb":96
+                },
+                "features":[
+                    "AVX2",
+                    "SSE4.1",
+                    "SSE4.2",
+                    "Hyper-Threading",
+                    "Virtualization (VT-x)",
+                    "AES-NI"
+                
+
+                ],
+                "overclockable":false,
+                "release_date":"2023-01"
+            },
+            {
+                "id":"intel-core-i5-1334U",
+                "name":"Intel Core i5-1334U",
+                "brand":"Intel",
+                "generation":13,
+                "generation_codename":"Raptor Lake",
+                "series":"Core i5",
+                "specs":{
+                    "cores": 10,
+                    "threads":12,
+                    "cache_mb":12,
+                    "base_freq_ghz":1.3,
+                    "boost_freq_ghz":4.6,
+                    "tdp_watts":15,
+                    "socket":"FCBGA1744",
+                    "architecture":"x86-64",
+                    "integrated_gpu":"Intel Xe Graphics 80EU",
+                    "max_mem_supported_gb":96
+                },
+                "features":[
+                    "AVX2",
+                    "SSE4.1",
+                    "SSE4.2",
+                    "Hyper-Threading",
+                    "Virtualization (VT-x)",
+                    "AES-NI"
+                ],
+                "overclockable":false,
+                "release_date":"2023-01"
+            },
+            {
+                "id":"amd-ryzen-ai-5-340",
+                "name":"AMD Ryzen AI 5 340",
+                "brand":"AMD",
+                "generation":9,
+                "generation_codename":"Krackan Point (Zen5)",
+                "series":"Ryzen AI 5",
+                "specs":{
+                    "cores":6,
+                    "threads":12,
+                    "cache_mb":16,
+                    "base_freq_ghz":2.0,
+                    "boost_freq_ghz":4.8,
+                    "tdp_watts":28,
+                    "socket":"FP8",
+                    "architecture":"x86-64",
+                    "integrated_gpu":"AMD Radeon 840M",
+                    "max_mem_supported_gb":256
+
+                },
+                "features":[
+                    "AVX2",
+                    "AVX512",
+                    "SSE4.1",
+                    "SSE4.2",
+                    "SMT (Hyper-Threading)",
+                    "Virtualization (AMD-V)",
+                    "AES-NI",
+                    "XDNA2 NPU (50 TOPS)"
+
+                ],
+                "overclockable":false,
+                "release_date":"2025-01"
+            },
+            {
+                "id":"amd-ryzen-ai-7-350",
+                "name":"AMD Ryzen AI 7 350",
+                "brand":"AMD",
+                "generation":9,
+                "generation_codename":"Krackan Point (Zen5)",
+                "series":"Ryzen AI 7",
+                "specs":{
+                    "cores":8,
+                    "threads":16,
+                    "cache_mb":16,
+                    "base_freq_ghz":2.0,
+                    "boost_freq_ghz":5.0,
+                    "tdp_watts":28,
+                    "socket":"FP8",
+                    "architecture":"x86-64",
+                    "integrated_gpu":"AMD Radeon 860M",
+                    "max_mem_supported_gb":256
+                },
+                "features": [
+                    "AVX2",
+                    "AVX512",
+                    "SSE4.1",
+                    "SSE4.2",
+                    "SMT (Hyper-Threading)",
+                    "Virtualization (AMD-V)",
+                    "AES-NI",
+                    "XDNA2 NPU (50 TOPS)"
+                ]
             }
 
         

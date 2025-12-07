@@ -12,6 +12,13 @@ import (
 //go:embed cpus.json
 var DB embed.FS
 
+const (
+	ColorGreen  = "\033[32m"
+	ColorRed    = "\033[31m"
+	ColorYellow = "\033[33m"
+	ColorReset  = "\033[0m"
+)
+
 type CPUs struct {
 	CPUs []CPU `json:"cpus"`
 }
@@ -40,6 +47,22 @@ type Specs struct {
 	MaximumSupportedMemoryGB int     `json:"max_mem_supported_gb"`
 }
 
+func compareHigher(val1, val2 float64) (string, string) {
+	if val1 > val2 {
+		return ColorGreen, ColorRed
+	} else if val2 > val1 {
+		return ColorRed, ColorGreen
+	}
+	return ColorYellow, ColorYellow
+}
+func compareLower(val1, val2 float64) (string, string) {
+	if val1 < val2 {
+		return ColorGreen, ColorRed
+	} else if val2 < val1 {
+		return ColorRed, ColorGreen
+	}
+	return ColorYellow, ColorYellow
+}
 func dumpID(id int, cpus CPUs) {
 	fmt.Printf("ID: %s\n", cpus.CPUs[id].ID)
 	fmt.Printf("├─Name: %s\n", cpus.CPUs[id].Name)
@@ -109,16 +132,41 @@ func compareCpus(id1, id2 int, cpus CPUs) {
 	fmt.Println()
 	title := fmt.Sprintf("CPU Comparison: %s VS %s\n", cpu1.Name, cpu2.Name)
 	fmt.Println(title)
-	fmt.Println("═══════════════════════════════════════════════════════════════")
-	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "Spec", cpu1.Name, cpu2.Name)
+	fmt.Println("═══════════════════════════════════════════════════════════════════")
+	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "Spec", cpu1.Name, cpu2.Name)
+	fmt.Println("───────────────────────────────────────────────────────────────────")
+	c1, c2 := compareHigher(float64(cpu1.Specs.Cores), float64(cpu2.Specs.Cores))
+	fmt.Printf("  %-16s │ %s%-24d%s │ %s%-24d%s\n", "Cores", c1, cpu1.Specs.Cores, ColorReset, c2, cpu2.Specs.Cores, ColorReset)
 
-	fmt.Printf("  %-12s │ %-22d │ %-22d\n", "Cores", cpu1.Specs.Cores, cpu2.Specs.Cores)
-	fmt.Printf("  %-12s │ %-22d │ %-22d\n", "Threads", cpu1.Specs.Threads, cpu2.Specs.Threads)
-	fmt.Printf("  %-12s │ %-22.2f │ %-22.2f\n", "Cache (MB)", cpu1.Specs.CacheMB, cpu2.Specs.CacheMB)
-	fmt.Printf("  %-12s │ %-22.2f │ %-22.2f\n", "Base (GHz)", cpu1.Specs.BaseFrequencyGHz, cpu2.Specs.BaseFrequencyGHz)
-	fmt.Printf("  %-12s │ %-22.2f │ %-22.2f\n", "Boost (GHz)", cpu1.Specs.BoostFrequencyGHz, cpu2.Specs.BoostFrequencyGHz)
-	fmt.Printf("  %-12s │ %-22d │ %-22d\n", "TDP (Watts)", cpu1.Specs.TDPWatts, cpu2.Specs.TDPWatts)
+	t1, t2 := compareHigher(float64(cpu1.Specs.Threads), float64(cpu2.Specs.Threads))
+	fmt.Printf("  %-16s │ %s%-24d%s │ %s%-24d%s\n", "Threads", t1, cpu1.Specs.Threads, ColorReset, t2, cpu2.Specs.Threads, ColorReset)
+
+	ca1, ca2 := compareHigher(cpu1.Specs.CacheMB, cpu2.Specs.CacheMB)
+	fmt.Printf("  %-16s │ %s%-24.2f%s │ %s%-24.2f%s\n", "Cache (MB)", ca1, cpu1.Specs.CacheMB, ColorReset, ca2, cpu2.Specs.CacheMB, ColorReset)
+
+	b1, b2 := compareHigher(cpu1.Specs.BaseFrequencyGHz, cpu2.Specs.BaseFrequencyGHz)
+	fmt.Printf("  %-16s │ %s%-24.2f%s │ %s%-24.2f%s\n", "Base (GHz)", b1, cpu1.Specs.BaseFrequencyGHz, ColorReset, b2, cpu2.Specs.BaseFrequencyGHz, ColorReset)
+
+	bo1, bo2 := compareHigher(cpu1.Specs.BoostFrequencyGHz, cpu2.Specs.BoostFrequencyGHz)
+	fmt.Printf("  %-16s │ %s%-24.2f%s │ %s%-24.2f%s\n", "Boost (GHz)", bo1, cpu1.Specs.BoostFrequencyGHz, ColorReset, bo2, cpu2.Specs.BoostFrequencyGHz, ColorReset)
+
+	tdp1, tdp2 := compareLower(float64(cpu1.Specs.TDPWatts), float64(cpu2.Specs.TDPWatts))
+	fmt.Printf("  %-16s │ %s%-24d%s │ %s%-24d%s\n", "TDP (Watts)", tdp1, cpu1.Specs.TDPWatts, ColorReset, tdp2, cpu2.Specs.TDPWatts, ColorReset)
+
+	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "Socket", cpu1.Specs.Socket, cpu2.Specs.Socket)
+	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "Architecture", cpu1.Specs.Architecture, cpu2.Specs.Architecture)
+	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "IGPU", cpu1.Specs.IntegratedGPU, cpu2.Specs.IntegratedGPU)
+	fmt.Printf("  %-12s │ %-22d │ %-22d\n", "Max Mem (GB)", cpu1.Specs.MaximumSupportedMemoryGB, cpu2.Specs.MaximumSupportedMemoryGB)
+	fmt.Println("═══════════════════════════════════════════════════════════════")
+	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "General Info", "-", "-")
+	fmt.Println("───────────────────────────────────────────────────────────────")
+	fmt.Printf("  %-12s │ %-22d │ %-22d\n", "Generation", cpu1.Generation, cpu2.Generation)
+	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "Brand", cpu1.Brand, cpu2.Brand)
+	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "Series", cpu1.Series, cpu2.Series)
+	fmt.Printf("  %-12s │ %-22t │ %-22t\n", "Ovrclockble?", cpu1.Overclockable, cpu2.Overclockable)
+	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "Release date", cpu1.ReleaseDate, cpu2.ReleaseDate)
 }
+
 func CaseInsensitiveContains(s, substring string) bool {
 	// Code taken from https://stackoverflow.com/questions/24836044/case-insensitive-string-search-in-golang
 	s, substring = strings.ToLower(s), strings.ToLower(substring)
