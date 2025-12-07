@@ -111,10 +111,13 @@ func compareCpus(id1, id2 int, cpus CPUs) {
 	fmt.Println(title)
 	fmt.Println("═══════════════════════════════════════════════════════════════")
 	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "Spec", cpu1.Name, cpu2.Name)
+
 	fmt.Printf("  %-12s │ %-22d │ %-22d\n", "Cores", cpu1.Specs.Cores, cpu2.Specs.Cores)
 	fmt.Printf("  %-12s │ %-22d │ %-22d\n", "Threads", cpu1.Specs.Threads, cpu2.Specs.Threads)
 	fmt.Printf("  %-12s │ %-22.2f │ %-22.2f\n", "Cache (MB)", cpu1.Specs.CacheMB, cpu2.Specs.CacheMB)
-
+	fmt.Printf("  %-12s │ %-22.2f │ %-22.2f\n", "Base (GHz)", cpu1.Specs.BaseFrequencyGHz, cpu2.Specs.BaseFrequencyGHz)
+	fmt.Printf("  %-12s │ %-22.2f │ %-22.2f\n", "Boost (GHz)", cpu1.Specs.BoostFrequencyGHz, cpu2.Specs.BoostFrequencyGHz)
+	fmt.Printf("  %-12s │ %-22d │ %-22d\n", "TDP (Watts)", cpu1.Specs.TDPWatts, cpu2.Specs.TDPWatts)
 }
 func CaseInsensitiveContains(s, substring string) bool {
 	// Code taken from https://stackoverflow.com/questions/24836044/case-insensitive-string-search-in-golang
