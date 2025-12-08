@@ -23,16 +23,21 @@ type CPUs struct {
 	CPUs []CPU `json:"cpus"`
 }
 type CPU struct {
-	ID                 string   `json:"id"`
-	Name               string   `json:"name"`
-	Brand              string   `json:"brand"`
-	Generation         int      `json:"generation"`
-	GenerationCodename string   `json:"generation_codename"`
-	Series             string   `json:"series"`
-	Specs              Specs    `json:"specs"`
-	Features           []string `json:"features"`
-	Overclockable      bool     `json:"overclockable"`
-	ReleaseDate        string   `json:"release_date"`
+	ID                 string     `json:"id"`
+	Name               string     `json:"name"`
+	Brand              string     `json:"brand"`
+	Generation         int        `json:"generation"`
+	GenerationCodename string     `json:"generation_codename"`
+	Series             string     `json:"series"`
+	Specs              Specs      `json:"specs"`
+	Benchmarks         Benchmarks `json:"benchmarks"`
+	Features           []string   `json:"features"`
+	Overclockable      bool       `json:"overclockable"`
+	ReleaseDate        string     `json:"release_date"`
+}
+type Benchmarks struct {
+	PassmarkMultiThreads int `json:"passmark_multithread_rating"`
+	PassmarkSingleThread int `json:"passmark_singlethread_rating"`
 }
 type Specs struct {
 	Cores                     int     `json:"cores"`
@@ -84,6 +89,18 @@ func dumpID(id int, cpus CPUs) {
 	fmt.Printf("│  ├─Integrated GPU: %s\n", cpus.CPUs[id].Specs.IntegratedGPU)
 	fmt.Printf("│  ├─Maximum supported memory: %dGB\n", cpus.CPUs[id].Specs.MaximumSupportedMemoryGB)
 	fmt.Printf("│  └─Maximum supported memory frequency: %dMT/s\n", cpus.CPUs[id].Specs.MaximumSupportedMemoryMHz)
+	fmt.Println("├─Benchmarks Scores:")
+	if cpus.CPUs[id].Benchmarks.PassmarkMultiThreads != 0 {
+		fmt.Printf("│  ├─Passmark Multithread Rating: %d\n", cpus.CPUs[id].Benchmarks.PassmarkMultiThreads)
+	} else {
+		fmt.Printf("│  ├─Passmark Multithread Rating: %s\n", "N\\A")
+	}
+	if cpus.CPUs[id].Benchmarks.PassmarkSingleThread != 0 {
+		fmt.Printf("│  ├─Passmark Singlethread Rating: %d\n", cpus.CPUs[id].Benchmarks.PassmarkSingleThread)
+	} else {
+		fmt.Printf("│  ├─Passmark Singlethread Rating: %s\n", "N\\A")
+	}
+
 	fmt.Println("├──Features:")
 	for f := 0; f < len(cpus.CPUs[id].Features)-1; f++ {
 		fmt.Printf("│  ├─%s\n", cpus.CPUs[id].Features[f])
@@ -161,12 +178,12 @@ func compareCpus(id1, id2 int, cpus CPUs) {
 	mh1, mh2 := compareHigher(float64(cpu1.Specs.MaximumSupportedMemoryMHz), float64(cpu2.Specs.MaximumSupportedMemoryMHz))
 	fmt.Printf("  %-16s │ %s%-24d%s │ %s%-24d%s\n", "Max Mem Freq", mh1, cpu1.Specs.MaximumSupportedMemoryMHz, ColorReset, mh2, cpu2.Specs.MaximumSupportedMemoryMHz, ColorReset)
 
-	fmt.Printf("  %-16s │ %-24s │ %-22s\n", "Socket", cpu1.Specs.Socket, cpu2.Specs.Socket)
-	fmt.Printf("  %-16s │ %-24s │ %-22s\n", "Architecture", cpu1.Specs.Architecture, cpu2.Specs.Architecture)
-	fmt.Printf("  %-16s │ %-24s │ %-22s\n", "IGPU", cpu1.Specs.IntegratedGPU, cpu2.Specs.IntegratedGPU)
-	fmt.Println("═══════════════════════════════════════════════════════════════")
+	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "Socket", cpu1.Specs.Socket, cpu2.Specs.Socket)
+	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "Architecture", cpu1.Specs.Architecture, cpu2.Specs.Architecture)
+	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "IGPU", cpu1.Specs.IntegratedGPU, cpu2.Specs.IntegratedGPU)
+	fmt.Println("═══════════════════════════════════════════════════════════════════")
 	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "General Info", "-", "-")
-	fmt.Println("───────────────────────────────────────────────────────────────")
+	fmt.Println("───────────────────────────────────────────────────────────────────")
 	gen1, gen2 := ColorYellow, ColorYellow
 	if cpu1.Brand == cpu2.Brand {
 		if cpu1.Generation > cpu2.Generation {

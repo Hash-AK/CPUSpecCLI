@@ -20,6 +20,10 @@
                 "max_mem_supported_gb": 64,
                 "max_mem_freq_mhz": 4800
             },
+            "benchmarks":{
+                "passmark_multithread_rating":0,
+                "passmark_singlethread_rating":0
+            },
             "features":[
                 "AVX2",
                 "SSE4.1",
@@ -53,6 +57,11 @@
                 "integrated_gpu": "Intel UHD Graphics 730",
                 "max_mem_supported_gb" : 64,
                 "max_mem_freq_mhz":4800
+
+            },
+            "benchmarks":{
+                "passmark_multithread_rating":0,
+                "passmark_singlethread_rating":0
             },
             "features":[
                 "AVX2",
@@ -84,7 +93,9 @@
                 "architecture":"x86-64",
                 "integrated_gpu":"Intel UHD Graphics for 12th Gen",
                 "max_mem_supported_gb":64,
-                "max_mem_freq_mhz":5200
+                "max_mem_freq_mhz":5200,
+                "passmark_multithread_rating":8331,
+                "passmark_singlethread_rating":2819  
             },
             "features":[
                 "AVX2",
@@ -118,6 +129,11 @@
                     "integrated_gpu":"Intel UHD Graphics for 13th Gen",
                     "max_mem_supported_gb":96,
                     "max_mem_freq_mhz":5200
+
+                },
+                "benchmarks":{
+                    "passmark_multithread_rating":11249,
+                    "passmark_singlethread_rating":3334
                 },
                 "features":[
                     "AVX2",
@@ -151,6 +167,11 @@
                     "integrated_gpu":"Intel Xe Graphics 80EU",
                     "max_mem_supported_gb":96,
                     "max_mem_freq_mhz":5200
+
+                },
+                "benchmarks":{
+                    "passmark_multithread_rating":13280,
+                    "passmark_singlethread_rating":13280                    
                 },
                 "features":[
                     "AVX2",
@@ -183,6 +204,11 @@
                     "max_mem_supported_gb":256,
                     "max_mem_freq_mhz":8000
 
+
+                },
+                "benchmarks":{
+                    "passmark_multithread_rating":19780,
+                    "passmark_singlethread_rating":3761
                 },
                 "features":[
                     "AVX2",
@@ -217,6 +243,11 @@
                     "integrated_gpu":"AMD Radeon 860M",
                     "max_mem_supported_gb":256,
                     "max_mem_freq_mhz":8000
+
+                },
+                "benchmarks":{
+                    "passmark_multithread_rating":24966,
+                    "passmark_singlethread_rating":3878
                 },
                 "features": [
                     "AVX2",
