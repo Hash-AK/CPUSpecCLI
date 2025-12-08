@@ -19,5 +19,4 @@ You can invoke the tool with a few options :
 ```(binaryname) --id "cpuid"``` : show a single cpu with the specified ID (ID reffering to the ```ID``` field from the database, ex: intel-core-i3-1215UL)  
 ```(binaryname) --compare id1,id2``` : compare two CPUs by their IDs.
 ## TODO
-- Add PassMark/other benchmark scores
 - Add prices

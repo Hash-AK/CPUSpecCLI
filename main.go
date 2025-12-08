@@ -38,6 +38,8 @@ type CPU struct {
 type Benchmarks struct {
 	PassmarkMultiThreads int `json:"passmark_multithread_rating"`
 	PassmarkSingleThread int `json:"passmark_singlethread_rating"`
+	GeekbenchMulticore   int `json:"geekbench_multicore_score"`
+	GeekbenchSinglecore  int `json:"geekbench_singlecore_score"`
 }
 type Specs struct {
 	Cores                     int     `json:"cores"`
@@ -89,6 +91,7 @@ func dumpID(id int, cpus CPUs) {
 	fmt.Printf("│  ├─Integrated GPU: %s\n", cpus.CPUs[id].Specs.IntegratedGPU)
 	fmt.Printf("│  ├─Maximum supported memory: %dGB\n", cpus.CPUs[id].Specs.MaximumSupportedMemoryGB)
 	fmt.Printf("│  └─Maximum supported memory frequency: %dMT/s\n", cpus.CPUs[id].Specs.MaximumSupportedMemoryMHz)
+	fmt.Println("│")
 	fmt.Println("├─Benchmarks Scores:")
 	if cpus.CPUs[id].Benchmarks.PassmarkMultiThreads != 0 {
 		fmt.Printf("│  ├─Passmark Multithread Rating: %d\n", cpus.CPUs[id].Benchmarks.PassmarkMultiThreads)
@@ -100,7 +103,17 @@ func dumpID(id int, cpus CPUs) {
 	} else {
 		fmt.Printf("│  ├─Passmark Singlethread Rating: %s\n", "N\\A")
 	}
-
+	if cpus.CPUs[id].Benchmarks.GeekbenchMulticore != 0 {
+		fmt.Printf("│  ├─Geekbench MultiCore Score: %d\n", cpus.CPUs[id].Benchmarks.GeekbenchMulticore)
+	} else {
+		fmt.Printf("│  ├─Geekbench MultiCore Score: %s\n", "N\\A")
+	}
+	if cpus.CPUs[id].Benchmarks.GeekbenchSinglecore != 0 {
+		fmt.Printf("│  └─Geekbench SingleCore Score: %d\n", cpus.CPUs[id].Benchmarks.GeekbenchSinglecore)
+	} else {
+		fmt.Printf("│  └─Geekbench SingleCore Score: %s\n", "N\\A")
+	}
+	fmt.Println("│")
 	fmt.Println("├──Features:")
 	for f := 0; f < len(cpus.CPUs[id].Features)-1; f++ {
 		fmt.Printf("│  ├─%s\n", cpus.CPUs[id].Features[f])
@@ -135,6 +148,28 @@ func dumpAllCpus(cpus CPUs) {
 		fmt.Printf("│  ├─Integrated GPU: %s\n", cpus.CPUs[i].Specs.IntegratedGPU)
 		fmt.Printf("│  ├─Maximum supported memory: %dGB\n", cpus.CPUs[i].Specs.MaximumSupportedMemoryGB)
 		fmt.Printf("│  └─Maximum supported memory frequency: %dMT/s\n", cpus.CPUs[i].Specs.MaximumSupportedMemoryMHz)
+		fmt.Println("│")
+		fmt.Println("├─Benchmarks Scores:")
+		if cpus.CPUs[i].Benchmarks.PassmarkMultiThreads != 0 {
+			fmt.Printf("│  ├─Passmark Multithread Rating: %d\n", cpus.CPUs[i].Benchmarks.PassmarkMultiThreads)
+		} else {
+			fmt.Printf("│  ├─Passmark Multithread Rating: %s\n", "N\\A")
+		}
+		if cpus.CPUs[i].Benchmarks.PassmarkSingleThread != 0 {
+			fmt.Printf("│  ├─Passmark Singlethread Rating: %d\n", cpus.CPUs[i].Benchmarks.PassmarkSingleThread)
+		} else {
+			fmt.Printf("│  ├─Passmark Singlethread Rating: %s\n", "N\\A")
+		}
+		if cpus.CPUs[i].Benchmarks.GeekbenchMulticore != 0 {
+			fmt.Printf("│  ├─Geekbench MultiCore Score: %d\n", cpus.CPUs[i].Benchmarks.GeekbenchMulticore)
+		} else {
+			fmt.Printf("│  ├─Geekbench MultiCore Score: %s\n", "N\\A")
+		}
+		if cpus.CPUs[i].Benchmarks.GeekbenchSinglecore != 0 {
+			fmt.Printf("│  └─Geekbench SingleCore Score: %d\n", cpus.CPUs[i].Benchmarks.GeekbenchSinglecore)
+		} else {
+			fmt.Printf("│  └─Geekbench SingleCore Score: %s\n", "N\\A")
+		}
 		fmt.Println("│")
 		fmt.Println("├──Features:")
 		for f := 0; f < len(cpus.CPUs[i].Features)-1; f++ {
@@ -181,6 +216,17 @@ func compareCpus(id1, id2 int, cpus CPUs) {
 	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "Socket", cpu1.Specs.Socket, cpu2.Specs.Socket)
 	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "Architecture", cpu1.Specs.Architecture, cpu2.Specs.Architecture)
 	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "IGPU", cpu1.Specs.IntegratedGPU, cpu2.Specs.IntegratedGPU)
+	fmt.Println("═══════════════════════════════════════════════════════════════════")
+	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "Benchmarks", "-", "-")
+	fmt.Println("───────────────────────────────────────────────────────────────────")
+	pmmt1, pmmt2 := compareHigher(float64(cpu1.Benchmarks.PassmarkMultiThreads), float64(cpu2.Benchmarks.PassmarkMultiThreads))
+	fmt.Printf("  %-16s │ %s%-24d%s │ %s%-24d%s\n", "Passmark Multi", pmmt1, cpu1.Benchmarks.PassmarkMultiThreads, ColorReset, pmmt2, cpu2.Benchmarks.PassmarkMultiThreads, ColorReset)
+	pmst1, pmst2 := compareHigher(float64(cpu1.Benchmarks.PassmarkSingleThread), float64(cpu2.Benchmarks.PassmarkSingleThread))
+	fmt.Printf("  %-16s │ %s%-24d%s │ %s%-2d%s\n", "Passmark Single", pmst1, cpu1.Benchmarks.PassmarkSingleThread, ColorReset, pmst2, cpu2.Benchmarks.PassmarkSingleThread, ColorReset)
+	gmc1, gmc2 := compareHigher(float64(cpu1.Benchmarks.GeekbenchMulticore), float64(cpu2.Benchmarks.GeekbenchMulticore))
+	fmt.Printf("  %-16s │ %s%-24d%s │ %s%-24d%s\n", "Geekbench Multi", gmc1, cpu1.Benchmarks.GeekbenchMulticore, ColorReset, gmc2, cpu2.Benchmarks.GeekbenchMulticore, ColorReset)
+	gsc1, gsc2 := compareHigher(float64(cpu1.Benchmarks.GeekbenchSinglecore), float64(cpu2.Benchmarks.GeekbenchSinglecore))
+	fmt.Printf("  %-16s │ %s%-24d%s │ %s%-24d%s\n", "Geekbench Single", gsc1, cpu1.Benchmarks.GeekbenchSinglecore, ColorReset, gsc2, cpu2.Benchmarks.GeekbenchSinglecore, ColorReset)
 	fmt.Println("═══════════════════════════════════════════════════════════════════")
 	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "General Info", "-", "-")
 	fmt.Println("───────────────────────────────────────────────────────────────────")
@@ -248,7 +294,7 @@ func main() {
 		if len(foundIDs) > 0 {
 			fmt.Printf("Found %d matches:\n", len(foundIDs))
 			for i := range foundIDs {
-				fmt.Printf("Name: %s, ID: %s\n", cpus.CPUs[i].Name, cpus.CPUs[i].ID)
+				fmt.Printf("Name: %s, ID: %s\n", cpus.CPUs[foundIDs[i]].Name, cpus.CPUs[foundIDs[i]].ID)
 			}
 		} else {
 			fmt.Printf("No matches found for term: %s\n", *searchTerm)

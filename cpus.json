@@ -22,7 +22,9 @@
             },
             "benchmarks":{
                 "passmark_multithread_rating":0,
-                "passmark_singlethread_rating":0
+                "passmark_singlethread_rating":0,
+                "geekbench_multicore_score":0,
+                "geekbench_singlecore_score":0
             },
             "features":[
                 "AVX2",
@@ -61,7 +63,9 @@
             },
             "benchmarks":{
                 "passmark_multithread_rating":0,
-                "passmark_singlethread_rating":0
+                "passmark_singlethread_rating":0,
+                "geekbench_multicore_score":0,
+                "geekbench_singlecore_score":0
             },
             "features":[
                 "AVX2",
@@ -93,9 +97,14 @@
                 "architecture":"x86-64",
                 "integrated_gpu":"Intel UHD Graphics for 12th Gen",
                 "max_mem_supported_gb":64,
-                "max_mem_freq_mhz":5200,
+                "max_mem_freq_mhz":5200
+
+            },
+            "benchmarks":{
                 "passmark_multithread_rating":8331,
-                "passmark_singlethread_rating":2819  
+                "passmark_singlethread_rating":2819,
+                "geekbench_multicore_score": 4821,
+                "geekbench_singlecore_score":1813
             },
             "features":[
                 "AVX2",
@@ -133,7 +142,10 @@
                 },
                 "benchmarks":{
                     "passmark_multithread_rating":11249,
-                    "passmark_singlethread_rating":3334
+                    "passmark_singlethread_rating":3334,
+                    "geekbench_multicore_score":0,
+                    "geekbench_singlecore_score":0
+                    
                 },
                 "features":[
                     "AVX2",
@@ -171,7 +183,9 @@
                 },
                 "benchmarks":{
                     "passmark_multithread_rating":13280,
-                    "passmark_singlethread_rating":13280                    
+                    "passmark_singlethread_rating":13280,
+                    "geekbench_multicore_score":0,
+                    "geekbench_singlecore_score":0         
                 },
                 "features":[
                     "AVX2",
@@ -205,10 +219,13 @@
                     "max_mem_freq_mhz":8000
 
 
+
                 },
                 "benchmarks":{
                     "passmark_multithread_rating":19780,
-                    "passmark_singlethread_rating":3761
+                    "passmark_singlethread_rating":3761,
+                    "geekbench_multicore_score":9172,
+                    "geekbench_singlecore_score":2354
                 },
                 "features":[
                     "AVX2",
@@ -247,7 +264,9 @@
                 },
                 "benchmarks":{
                     "passmark_multithread_rating":24966,
-                    "passmark_singlethread_rating":3878
+                    "passmark_singlethread_rating":3878,
+                    "geekbench_multicore_score":11338,
+                    "geekbench_singlecore_score":2488
                 },
                 "features": [
                     "AVX2",
@@ -258,7 +277,9 @@
                     "Virtualization (AMD-V)",
                     "AES-NI",
                     "XDNA2 NPU (50 TOPS)"
-                ]
+                ],
+                "overclockable":false,
+                "release_date":"2025-01"
             }
 
         
