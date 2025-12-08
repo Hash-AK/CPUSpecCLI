@@ -269,7 +269,7 @@ func main() {
 		var idFound int
 		var foundMatch bool
 		for i := range cpus.CPUs {
-			if cpus.CPUs[i].ID == *idToSearch {
+			if strings.ToLower(cpus.CPUs[i].ID) == strings.ToLower(*idToSearch) {
 				idFound = i
 				foundMatch = true
 			}
