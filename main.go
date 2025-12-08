@@ -282,8 +282,7 @@ func main() {
 			fmt.Printf("Could not find any CPU in database with id %s\n", *idToSearch)
 		}
 
-	}
-	if *searchTerm != "none" {
+	} else if *searchTerm != "none" {
 		var foundIDs []int
 
 		for i := range cpus.CPUs {
@@ -299,8 +298,7 @@ func main() {
 		} else {
 			fmt.Printf("No matches found for term: %s\n", *searchTerm)
 		}
-	}
-	if len(*compareIDs) > 0 {
+	} else if len(*compareIDs) > 0 {
 		if len(*compareIDs) == 2 {
 			id1, id2 := (*compareIDs)[0], (*compareIDs)[1]
 			var numericalIDs []int
@@ -324,9 +322,9 @@ func main() {
 		} else {
 			fmt.Println("Please provide two CPUs ids to compare.")
 		}
-	}
-	if *dumpAllFlag {
+	} else if *dumpAllFlag {
 		dumpAllCpus(cpus)
+	} else {
+		pflag.PrintDefaults()
 	}
-	//dumpAllCpus(cpus)
 }
