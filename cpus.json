@@ -17,7 +17,8 @@
                 "socket":"FCLGA1700",
                 "architecture": "x86-64",
                 "integrated_gpu":"Intel UHD Graphics for 12th Gen",
-                "max_mem_supported_gb": 64 
+                "max_mem_supported_gb": 64,
+                "max_mem_freq_mhz": 4800
             },
             "features":[
                 "AVX2",
@@ -50,7 +51,8 @@
                 "socket": "FCLGA1700",
                 "architecture": "x86-64",
                 "integrated_gpu": "Intel UHD Graphics 730",
-                "max_mem_supported_gb" : 64
+                "max_mem_supported_gb" : 64,
+                "max_mem_freq_mhz":4800
             },
             "features":[
                 "AVX2",
@@ -81,7 +83,8 @@
                 "socket":"FCBGA1744",
                 "architecture":"x86-64",
                 "integrated_gpu":"Intel UHD Graphics for 12th Gen",
-                "max_mem_supported_gb":64
+                "max_mem_supported_gb":64,
+                "max_mem_freq_mhz":5200
             },
             "features":[
                 "AVX2",
@@ -113,7 +116,8 @@
                     "socket":"FCBGA1744",
                     "architecture":"x86-64",
                     "integrated_gpu":"Intel UHD Graphics for 13th Gen",
-                    "max_mem_supported_gb":96
+                    "max_mem_supported_gb":96,
+                    "max_mem_freq_mhz":5200
                 },
                 "features":[
                     "AVX2",
@@ -145,7 +149,8 @@
                     "socket":"FCBGA1744",
                     "architecture":"x86-64",
                     "integrated_gpu":"Intel Xe Graphics 80EU",
-                    "max_mem_supported_gb":96
+                    "max_mem_supported_gb":96,
+                    "max_mem_freq_mhz":5200
                 },
                 "features":[
                     "AVX2",
@@ -175,7 +180,8 @@
                     "socket":"FP8",
                     "architecture":"x86-64",
                     "integrated_gpu":"AMD Radeon 840M",
-                    "max_mem_supported_gb":256
+                    "max_mem_supported_gb":256,
+                    "max_mem_freq_mhz":8000
 
                 },
                 "features":[
@@ -209,7 +215,8 @@
                     "socket":"FP8",
                     "architecture":"x86-64",
                     "integrated_gpu":"AMD Radeon 860M",
-                    "max_mem_supported_gb":256
+                    "max_mem_supported_gb":256,
+                    "max_mem_freq_mhz":8000
                 },
                 "features": [
                     "AVX2",

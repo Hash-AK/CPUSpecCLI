@@ -35,16 +35,17 @@ type CPU struct {
 	ReleaseDate        string   `json:"release_date"`
 }
 type Specs struct {
-	Cores                    int     `json:"cores"`
-	Threads                  int     `json:"threads"`
-	CacheMB                  float64 `json:"cache_mb"`
-	BaseFrequencyGHz         float64 `json:"base_freq_ghz"`
-	BoostFrequencyGHz        float64 `json:"boost_freq_ghz"`
-	TDPWatts                 int     `json:"tdp_watts"`
-	Socket                   string  `json:"socket"`
-	Architecture             string  `json:"architecture"`
-	IntegratedGPU            string  `json:"integrated_gpu"`
-	MaximumSupportedMemoryGB int     `json:"max_mem_supported_gb"`
+	Cores                     int     `json:"cores"`
+	Threads                   int     `json:"threads"`
+	CacheMB                   float64 `json:"cache_mb"`
+	BaseFrequencyGHz          float64 `json:"base_freq_ghz"`
+	BoostFrequencyGHz         float64 `json:"boost_freq_ghz"`
+	TDPWatts                  int     `json:"tdp_watts"`
+	Socket                    string  `json:"socket"`
+	Architecture              string  `json:"architecture"`
+	IntegratedGPU             string  `json:"integrated_gpu"`
+	MaximumSupportedMemoryGB  int     `json:"max_mem_supported_gb"`
+	MaximumSupportedMemoryMHz int     `json:"max_mem_freq_mhz"`
 }
 
 func compareHigher(val1, val2 float64) (string, string) {
@@ -152,19 +153,32 @@ func compareCpus(id1, id2 int, cpus CPUs) {
 
 	tdp1, tdp2 := compareLower(float64(cpu1.Specs.TDPWatts), float64(cpu2.Specs.TDPWatts))
 	fmt.Printf("  %-16s │ %s%-24d%s │ %s%-24d%s\n", "TDP (Watts)", tdp1, cpu1.Specs.TDPWatts, ColorReset, tdp2, cpu2.Specs.TDPWatts, ColorReset)
+	mm1, mm2 := compareHigher(float64(cpu1.Specs.MaximumSupportedMemoryGB), float64(cpu2.Specs.MaximumSupportedMemoryGB))
+	fmt.Printf("  %-16s │ %s%-24d%s │ %s%-24d%s\n", "Max Mem (GB)", mm1, cpu1.Specs.MaximumSupportedMemoryGB, ColorReset, mm2, cpu2.Specs.MaximumSupportedMemoryGB, ColorReset)
 
-	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "Socket", cpu1.Specs.Socket, cpu2.Specs.Socket)
-	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "Architecture", cpu1.Specs.Architecture, cpu2.Specs.Architecture)
-	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "IGPU", cpu1.Specs.IntegratedGPU, cpu2.Specs.IntegratedGPU)
-	fmt.Printf("  %-12s │ %-22d │ %-22d\n", "Max Mem (GB)", cpu1.Specs.MaximumSupportedMemoryGB, cpu2.Specs.MaximumSupportedMemoryGB)
+	mh1, mh2 := compareHigher(float64(cpu1.Specs.MaximumSupportedMemoryMHz), float64(cpu2.Specs.MaximumSupportedMemoryMHz))
+	fmt.Printf("  %-16s │ %s%-24d%s │ %s%-24d%s\n", "Max Mem Freq", mh1, cpu1.Specs.MaximumSupportedMemoryMHz, ColorReset, mh2, cpu2.Specs.MaximumSupportedMemoryMHz, ColorReset)
+
+	fmt.Printf("  %-16s │ %-24s │ %-22s\n", "Socket", cpu1.Specs.Socket, cpu2.Specs.Socket)
+	fmt.Printf("  %-16s │ %-24s │ %-22s\n", "Architecture", cpu1.Specs.Architecture, cpu2.Specs.Architecture)
+	fmt.Printf("  %-16s │ %-24s │ %-22s\n", "IGPU", cpu1.Specs.IntegratedGPU, cpu2.Specs.IntegratedGPU)
 	fmt.Println("═══════════════════════════════════════════════════════════════")
-	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "General Info", "-", "-")
+	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "General Info", "-", "-")
 	fmt.Println("───────────────────────────────────────────────────────────────")
-	fmt.Printf("  %-12s │ %-22d │ %-22d\n", "Generation", cpu1.Generation, cpu2.Generation)
-	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "Brand", cpu1.Brand, cpu2.Brand)
-	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "Series", cpu1.Series, cpu2.Series)
-	fmt.Printf("  %-12s │ %-22t │ %-22t\n", "Ovrclockble?", cpu1.Overclockable, cpu2.Overclockable)
-	fmt.Printf("  %-12s │ %-22s │ %-22s\n", "Release date", cpu1.ReleaseDate, cpu2.ReleaseDate)
+	gen1, gen2 := ColorYellow, ColorYellow
+	if cpu1.Brand == cpu2.Brand {
+		if cpu1.Generation > cpu2.Generation {
+			gen1, gen2 = ColorGreen, ColorRed
+		} else if cpu2.Generation > cpu1.Generation {
+			gen1, gen2 = ColorRed, ColorGreen
+		}
+	}
+	fmt.Printf("  %-16s │ %s%-24d%s │ %s%-24d%s\n", "Generation", gen1, cpu1.Generation, ColorReset, gen2, cpu2.Generation, ColorReset)
+	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "Brand", cpu1.Brand, cpu2.Brand)
+	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "Series", cpu1.Series, cpu2.Series)
+	fmt.Printf("  %-16s │ %-24t │ %-24t\n", "Overclockable?", cpu1.Overclockable, cpu2.Overclockable)
+	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "Release date", cpu1.ReleaseDate, cpu2.ReleaseDate)
+
 }
 
 func CaseInsensitiveContains(s, substring string) bool {
