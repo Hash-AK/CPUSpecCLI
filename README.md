@@ -20,6 +20,4 @@ You can invoke the tool with a few options :
 ```(binaryname) --compare id1,id2``` : compare two CPUs by their IDs.
 ## TODO
 - Add PassMark/other benchmark scores
-
-- Add memory frequencies limit
-
+- Add prices

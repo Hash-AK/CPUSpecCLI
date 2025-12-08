@@ -82,7 +82,8 @@ func dumpID(id int, cpus CPUs) {
 	fmt.Printf("│  ├─Socket: %s\n", cpus.CPUs[id].Specs.Socket)
 	fmt.Printf("│  ├─Architecture: %s\n", cpus.CPUs[id].Specs.Architecture)
 	fmt.Printf("│  ├─Integrated GPU: %s\n", cpus.CPUs[id].Specs.IntegratedGPU)
-	fmt.Printf("│  └─Maximum supported memory: %dGB\n", cpus.CPUs[id].Specs.MaximumSupportedMemoryGB)
+	fmt.Printf("│  ├─Maximum supported memory: %dGB\n", cpus.CPUs[id].Specs.MaximumSupportedMemoryGB)
+	fmt.Printf("│  └─Maximum supported memory frequency: %dMT/s\n", cpus.CPUs[id].Specs.MaximumSupportedMemoryMHz)
 	fmt.Println("├──Features:")
 	for f := 0; f < len(cpus.CPUs[id].Features)-1; f++ {
 		fmt.Printf("│  ├─%s\n", cpus.CPUs[id].Features[f])
@@ -115,7 +116,8 @@ func dumpAllCpus(cpus CPUs) {
 		fmt.Printf("│  ├─Socket: %s\n", cpus.CPUs[i].Specs.Socket)
 		fmt.Printf("│  ├─Architecture: %s\n", cpus.CPUs[i].Specs.Architecture)
 		fmt.Printf("│  ├─Integrated GPU: %s\n", cpus.CPUs[i].Specs.IntegratedGPU)
-		fmt.Printf("│  └─Maximum supported memory: %dGB\n", cpus.CPUs[i].Specs.MaximumSupportedMemoryGB)
+		fmt.Printf("│  ├─Maximum supported memory: %dGB\n", cpus.CPUs[i].Specs.MaximumSupportedMemoryGB)
+		fmt.Printf("│  └─Maximum supported memory frequency: %dMT/s\n", cpus.CPUs[i].Specs.MaximumSupportedMemoryMHz)
 		fmt.Println("│")
 		fmt.Println("├──Features:")
 		for f := 0; f < len(cpus.CPUs[i].Features)-1; f++ {
@@ -174,6 +176,7 @@ func compareCpus(id1, id2 int, cpus CPUs) {
 		}
 	}
 	fmt.Printf("  %-16s │ %s%-24d%s │ %s%-24d%s\n", "Generation", gen1, cpu1.Generation, ColorReset, gen2, cpu2.Generation, ColorReset)
+
 	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "Brand", cpu1.Brand, cpu2.Brand)
 	fmt.Printf("  %-16s │ %-24s │ %-24s\n", "Series", cpu1.Series, cpu2.Series)
 	fmt.Printf("  %-16s │ %-24t │ %-24t\n", "Overclockable?", cpu1.Overclockable, cpu2.Overclockable)
