@@ -1,5 +1,11 @@
 # CPUSpecCLI
 ## Introduction
+
+https://github.com/user-attachments/assets/1194f1d7-811e-427a-bf2a-75c2df008078
+
+
+_V1.0.0 demo video_
+
 CPUSpecCLI is a basic command-line tool to fetch info about differnt CPUs. It permit to know the number of cores, threads, maximum supported memory, etc.
 
 It fetch the data from a json database filled with information taken from [Intel's website](https://ark.intel.com).
